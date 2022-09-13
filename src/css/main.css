@@ -1,0 +1,139 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 800px;
+  margin: 8px auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.container-form {
+  max-width: calc(1rem * 37);
+  margin: 12px auto;
+}
+
+.form {
+  display: grid;
+  place-items: center;
+  gap: 16px;
+  padding: 8px;
+  box-shadow: 0 0 0 4px black;
+}
+
+.lifts-container {
+  display: grid;
+  grid-template-columns: 1fr 80% 1fr;
+  gap: 8px;
+}
+
+.button {
+  background: transparent;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.submit {
+  box-shadow: -4px 4px black;
+}
+
+.lifts-wrapper {
+  position: relative;
+  display: grid;
+  row-gap: 8px;
+  grid-template-columns: repeat(3, minmax(50px, 1fr));
+  grid-template-rows: repeat(10, minmax(100px, 1fr));
+}
+
+.lift {
+  position: absolute;
+  top: auto;
+  bottom: 1px;
+  width: 50px;
+  height: 100px;
+  border: 1px solid;
+}
+
+.lifts-item {
+  border-bottom: 1px solid;
+  text-align: center;
+}
+
+.up {
+  background-color: green;
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+
+.down {
+  background-color: orange;
+  cursor: pointer;
+}
+
+.doors {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  color: black;
+}
+/* From here- I copied only, not understood*/
+.doors::after,
+.doors::before {
+  content: "";
+  background-color: cyan;
+  position: absolute;
+  transition-duration: 2.5s;
+}
+
+.doors::after,
+.doors::before {
+  height: 100%;
+  width: 50%;
+}
+
+.doors::after {
+  right: 0;
+  transform-origin: right;
+}
+
+.doors::before {
+  left: 0;
+  transform-origin: left;
+}
+
+.doors-open:after,
+.doors-open:before {
+  transform: scaleX(0);
+}
+
+.doors-close:after,
+.doors-close:before {
+  transform: scaleX(1);
+}
+/* till here(above)- I copied only, not understood*/
+
+.buttons-wrapper,
+.floors-number-wrapper {
+  display: grid;
+  grid-template-rows: repeat(10, minmax(100px, 1fr));
+}
+
+.buttons-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+}
+
+.floor-number {
+  display: flex;
+  align-items: end;
+}
