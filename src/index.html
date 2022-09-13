@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lift Simulation</title>
+    <link rel="stylesheet" href="./css/main.css" />
+    <script src="./js/main.js" defer></script>
+  </head>
+
+  <body>
+    <main class="container app" id="app">
+      <section class="container-form">
+        <form class="form" id="form">
+          <label>
+            Enter Floors:
+            <input
+              type="number"
+              name="floors"
+              min="1"
+              max="10"
+              value="10"
+              required
+            />
+          </label>
+          <label>
+            Enter Lifts:
+            <input
+              type="number"
+              name="lifts"
+              min="1"
+              max="10"
+              value="1"
+              required
+            />
+          </label>
+          <button class="button submit" type="submit">Submit</button>
+        </form>
+      </section>
+      <section class="lifts-container">
+        <div id="buttonsWrapper" class="buttons-wrapper"></div>
+        <div id="liftsWrapper" class="lifts-wrapper"></div>
+        <div id="floorsNumberWrapper" class="floors-number-wrapper"></div>
+      </section>
+      <div class="loader-container" id="loader-container">
+        <div class="loader" id="loader"></div>
+      </div>
+    </main>
+  </body>
+</html>
