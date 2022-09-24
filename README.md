@@ -19,3 +19,7 @@ Create a web app where you can simulate lift mechanics for a client
    - Lift moving at 2s per floor
    - Lift stopping at every floor where it was called
    - Mobile friendly design
+
+# Finished
+   - Milestone 1[X]
+   - Milestone 2[X]
