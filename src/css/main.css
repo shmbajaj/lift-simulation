@@ -137,3 +137,8 @@
   display: flex;
   align-items: end;
 }
+
+/* disabling lift */
+.lift--disabled{
+  border: 4px solid red;
+}

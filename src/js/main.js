@@ -2,6 +2,7 @@ const liftsWrapper = document.getElementById("liftsWrapper");
 const buttonsWrapper = document.getElementById("buttonsWrapper");
 const floorsNumberWrapper = document.getElementById("floorsNumberWrapper");
 const form = document.getElementById("form");
+const disableLiftForm = document.getElementById("disableLiftForm");
 
 //default values
 //if lift is moving and doors are openining/closing lift isInUse:true else isInUse:false
@@ -13,6 +14,8 @@ const lift = {
 };
 
 const requests = [];
+const excludedLifts =[];
+const liftAnimationsReferences = {};
 let numberOfLifts = 1;
 let numberOfFloors = 10;
 let lifts = {};
@@ -21,6 +24,7 @@ let assigned = {};
 //start:
 initializeApp();
 form.addEventListener("submit", onFormSubmitHandler);
+disableLiftForm.addEventListener("submit", onDisableLiftFormSubmitHandler);
 
 function initializeApp() {
   //set rows and columns according to number of floors and lifts
@@ -127,7 +131,12 @@ function getLiftId(floorNumber, direction) {
 }
 
 function getShortestDistanceLiftId(floorNumber, direction, lifts) {
-  let availableLifts = [...lifts];
+  
+  //INFO: filter disabled lifts
+  const filteredLifts = lifts.filter(lift => !excludedLifts.includes(lift.number));
+
+  let availableLifts = [...filteredLifts];
+
 
   //get already assigned lifts for requested floorNumber
   const alreadyAssignedLifts = availableLifts.filter(
@@ -293,7 +302,11 @@ function moveLift({ nextFloorNumber, direction }) {
       iterations: 1,
     }
   );
-  //event listener on animation
+  //Store Reference
+  liftAnimationsReferences[liftId] = liftAnimation;
+  // add event handler
+
+  //event lis tener on animation
   liftAnimation.finished.then(() => {
     if (liftValues.type === "bottom") {
       lift.style.bottom = liftValues.calculatedValue + "px";
@@ -331,3 +344,69 @@ function onFormSubmitHandler(event) {
   //update ui again
   initializeApp();
 }
+
+function onDisableLiftFormSubmitHandler(event){
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  const liftNumber = formData.get("liftNumber");
+  sendLiftToNearestFloor(liftNumber);
+}
+
+// TODO: use this function to create lift
+function getLift(liftNumber){
+  const lift = document.createElement("div");
+  const doors = document.createElement("div");
+  doors.classList.toggle("doors");
+  lift.classList.toggle("lift");
+  doors.textContent = liftNumber;
+  lift.setAttribute("id", "lift" + liftNumber);
+  console.log({lift});
+  lift.appendChild(doors);
+  return lift;
+}
+
+function sendLiftToNearestFloor(liftNumber){
+  const lift = document.getElementById('lift' + liftNumber);
+  if(!lift) return;
+  lift.classList.add('lift--disabled');
+  excludedLifts.push(parseInt(liftNumber, 10));
+  const animation = liftAnimationsReferences[liftNumber];
+  if(!animation) return;
+  animation?.pause();
+  // if(animation.finished) return;
+  // const lift = document.getElementById('lift' + liftNumber);
+  // const liftStyle = window.getComputedStyle(lift);
+  // const bottom = liftStyle.getPropertyValue("bottom");
+  // const bottomValue = parseInt(bottom.replace("px", ""), 10);
+  // const top = liftStyle.getPropertyValue("top");
+  // const topValue = parseInt(top.replace("px", ""), 10);
+  // console.log({bottomValue, topValue});
+  // const distance = Math.abs(topValue - bottomValue);
+  // //GO OPPOSITE HERE
+  // const type = topValue > bottomValue ? 'top' : 'bottom';
+  // const intialValue = topValue > bottomValue ? top : bottom;
+  // const remainder1 = topValue % 100;
+  // const remainder2 = bottomValue % 100;
+  // const remainderDistance = Math.abs(remainder1 - remainder2);
+  // console.log({distance, type, intialValue, remainderDistance});
+  // const liftAnimation = lift.animate([
+  //   {
+  //     [type]: `${intialValue}px`,
+  //   },
+  //   {
+  //     [type]: `${remainderDistance}px`
+  //   }
+  // ],{
+  //   duration: 2000,
+  //   iterations: 1,
+  // });
+  // console.log({type, intialValue, remainderDistance});
+  // liftAnimation.finished.then(() => {
+  //   if (type === "bottom") {
+  //     lift.style.bottom = remainderDistance + "px";
+  //   } else {
+  //     lift.style.top = remainderDistance + "px";
+  //   }
+  // });
+}
+
